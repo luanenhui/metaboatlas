@@ -1,0 +1,25 @@
+[[source]]
+url = "https://pypi.python.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[dev-packages]
+watchdog = "*"
+faker = "*"
+
+[packages]
+bootstrap-flask = "*"
+flask-moment = "*"
+flask-sqlalchemy = "*"
+python-dotenv = "*"
+flask-wtf = "*"
+flask = "*"
+flask-login = "*"
+unidecode = "*"
+psycopg2 = "*"
+tempfile2 = "*"
+flask-ckeditor = "*"
+email-validator = "*"
+celery = "*"
+redis = "*"
+flask-mail = "*"

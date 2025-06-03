@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>metaboAtlas</title>
+    <script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>  <!-- jquery -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css" type="text/css">  <!-- datatables-->
+    <script type="text/javascript" src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>  <!-- datatables-->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}" type="text/css">
+    <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}" type="text/javascript"></script>
+</head>
+
+<body>
+    <table class="table table-hover" id="myTable">
+        <thead>
+            <tr>
+                <th scope="col">SpectraID</th>
+                <th scope="col">Similarity</th>
+                <th scope="col">PrecursorMZ</th>
+                <th scope="col">PrecursorType</th>
+                <th scope="col">Instrument</th>
+                <th scope="col">CE</th>
+                <th scope="col">CompoundID</th>
+                <th scope="col">Name</th>
+                <th scope="col">Formula</th>
+                <th scope="col">Pubchem</th>
+                <th scope="col">MZ</th>
+                <th scope="col">Intensity</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for result in resultJson %}
+            <tr>
+                <th scope="row">{{result.SpectraID}}</th>
+                <th scope="row">{{result.score}}</th>
+                <th scope="row">{{result.precursorMZ}}</th>
+                <th scope="row">{{result.precursorType}}</th>
+                <th scope="row">{{result.Instrument}}</th>
+                <th scope="row">{{result.CE}}</th>
+                <th scope="row"><a href="/search/metabolite/detail?name={{result.CompoundID}}">{{result.CompoundID}}</a></th>
+                <th scope="row">{{result.Name}}</th>
+                <th scope="row">{{result.Formula}}</th>
+                <th scope="row">{{result.Pubchem}}</th>
+                <th scope="row">{{result.MZ}}</th>
+                <th scope="row">{{result.Intensity}}</th>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+
+<script>
+    $(document).ready(function(){
+        $('#myTable').DataTable();
+    })
+</script>
+
+</html>
+

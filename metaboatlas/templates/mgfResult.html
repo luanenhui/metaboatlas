@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>metaboAtlas</title>
+    <script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>  <!-- jquery -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css" type="text/css">  <!-- datatables-->
+    <script type="text/javascript" src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>  <!-- datatables-->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}" type="text/css">
+    <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}" type="text/javascript"></script>
+</head>
+
+<body>
+    <table class="table table-hover" id="myTable">
+        <thead>
+            <tr>
+                <th scope="col">P1</th>
+                <th scope="col">P2</th>
+                <th scope="col">Score</th>
+                <th scope="col">P1.MZ</th>
+                <th scope="col">P1.RT</th>
+                <th scope="col">P2.MZ</th>
+                <th scope="col">P2.RT</th>
+        </thead>
+        <tbody>
+            {% for result in resultJson %}
+            <tr>
+                <th scope="row">{{result.P1}}</th>
+                <th scope="row">{{result.P2}}</th>
+                <th scope="row">{{result.Score}}</th>
+                <th scope="row">{{result.P1_MZ}}</th>
+                <th scope="row">{{result.P1_RT}}</th>
+                <th scope="row">{{result.P2_MZ}}</th>
+                <th scope="row">{{result.P2_RT}}</th>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+
+<script>
+    $(document).ready(function(){
+        $('#myTable').DataTable();
+    })
+</script>
+
+</html>
+

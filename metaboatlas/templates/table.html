@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>metaboAtlas</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}" type="text/css"> <!-- bootstrap -->
+    <script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>  <!-- jquery -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css" type="text/css">  <!-- datatables-->
+    <script type="text/javascript" src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>  <!-- datatables-->
+    <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}" type="text/javascript"></script> <!-- bootstrap -->
+    <script src="{{ url_for('static', filename='js/d3.min.js') }}" type="text/javascript"></script> <!-- d3 -->
+</head>
+
+<body>
+    <div id="vue1">
+        <table class="table table-hover" id="myTable">
+            <thead>
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Formula</th>
+                    <th scope="col">Inchikey</th>
+                    <th scope="col">smiles</th>
+                    <th scope="col">Exactmass</th>
+                    <th scope="col">Pubchem</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for result in resultJson %}
+                <tr>
+                    <th scope="row"><a href="/search/metabolite/detail?name={{result.MAID}}">
+                            <font color="blue">{{result.MAID}}</font>
+                        </a></th>
+                    <td>{{result.NAME}}</td>
+                    <td>{{result.FORMULA}}</td>
+                    <td>{{result.INCHIKEY}}</td>
+                    <td>{{result.SMILES}}</td>
+                    <td>{{result.ExactMass}}</td>
+                    <td>{{result.PUBCHEM}}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+
+<script>
+    $(document).ready(function(){
+        $('#myTable').DataTable();
+    })
+</script>
+</html>

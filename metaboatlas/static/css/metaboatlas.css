@@ -1,0 +1,44 @@
+
+.panel,.panelshow,.flip
+{
+/*margin:0px;
+padding:5px;
+text-align:left;
+background:#FFFFFF;
+border:solid 1px #FFFFFF;*/
+padding:5px;
+text-align:left;
+background-color:#FFFDF0;
+border:solid 1px #FFFDF0;
+
+}
+.panel
+{
+padding:50px;
+display:none;
+/*height:120px;
+display:none;*/
+}
+
+.panelshow
+{
+padding:50px;
+display:show;
+/*height:120px;
+display:none;*/
+}
+
+
+
+.button
+{
+    font-size: 13px;
+    color:black;
+    font-weight: bold;
+}
+
+#tdbgcolor{
+    background-image : url(image/bgcolor.png);
+    background-repeat:repeat-x;
+    background-size: 2000px;
+}

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>metaboAtlas</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}" type="text/css">
+    <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}" type="text/javascript"></script>
+    <script src="{{ url_for('static', filename='js/d3.min.js') }}" type="text/javascript"></script>
+    <script src="https://cdn.staticfile.org/vue/2.2.2/vue.min.js"></script> <!-- vue -->
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script> <!-- ajax -->
+</head>
+
+<body>
+    <div id="vue1">
+        {% raw %}
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Formula</th>
+                    <th scope="col">Inchikey</th>
+                    <th scope="col">smiles</th>
+                    <th scope="col">Exactmass</th>
+                    <th scope="col">Pubchem</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="result in resultJson">
+                    <th scope="row"><a href="/search/metabolite/detail?name={{result.MAID}}">
+                            <font color="blue">{{result.MAID}}</font>
+                        </a></th>
+                    <td>{{result.NAME}}</td>
+                    <td>{{result.FORMULA}}</td>
+                    <td>{{result.INCHIKEY}}</td>
+                    <td>{{result.SMILES}}</td>
+                    <td>{{result.ExactMass}}</td>
+                    <td>{{result.PUBCHEM}}</td>
+                </tr>
+            </tbody>
+        </table>
+        {% endraw %}
+    </div>
+</body>
+
+<script>
+    new Vue({
+        el: '#vue1',
+        data: {
+            message: "abc",
+            resultJson: ""
+        },
+        mounted() {
+            axios
+                .get("/api/search/metabolite?name={{name}}")
+                .then(response => (
+                    this.resultJson = response.data,
+                    console.log(this.resultJson)
+                ))
+        }
+    })
+</script>
+
+</html>

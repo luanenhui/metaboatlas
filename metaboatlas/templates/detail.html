@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>metaboAtlas</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}" type="text/css">
+    <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}" type="text/javascript"></script>
+    <!-- <script src="{{ url_for('static', filename='js/d3.min.js') }}" type="text/javascript"></script> -->
+    <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+</head>
+
+<body onload="displayChart()">
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Tag</th>
+                <th scope="col">Content</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <th scope="row">Compound ID</th>
+                <td>{{result.metabo.MAID}}</td>
+            </tr>
+            <tr>
+                <th scope="row">Name</th>
+                <td>{{result.metabo.NAME}}</td>
+            </tr>
+            <tr>
+                <th scope="row">Formula</th>
+                <td>{{result.metabo.FORMULA}}</td>
+            </tr>
+            <tr>
+                <th scope="row">INCHIKEY</th>
+                <td>{{result.metabo.INCHIKEY}}</td>
+            </tr>
+            <tr>
+                <th scope="row">SMILES</th>
+                <td>{{result.metabo.SMILES}}</td>
+            </tr>
+            <tr>
+                <th scope="row">Instrument type</th>
+                <td>{{result.metabo.INSTRUMENTTYPE}}</td>
+            </tr>
+            <tr>
+                <th scope="row">Exact mass</th>
+                <td>{{result.metabo.ExactMass}}</td>
+            </tr>
+            <tr>
+                <th scope="row">Pubchem ID</th>
+                <td>{{result.metabo.PUBCHEM}}</td>
+            </tr>
+            {% for spectra in result.spectra %}
+            <tr>
+                <th scope="row">{{spectra.SpectraID}}</th>
+                <th scope="row" class="spectra">{{spectra.MZ}}</th>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    
+</body>
+
+<script>
+    function drawMS2(component){
+        info = component.innerHTML
+        mz = info.split("<br>")[0]
+        intensity = info.split("<br>")[1]
+        component.innerHTML = intensity
+    }
+</script>
+
+<script>
+    function displayChart(){
+    var width = 1200; 
+    var height = 500; 
+    
+    // var svg = d3.select("body")
+    //     .append("svg") 
+    //     .attr("width", width)      
+    //     .attr("height", height);    
+
+    var data = document.getElementsByClassName("spectra")
+    var dataset = []
+    for (var i=0; i<data.length;i++){
+        result = data[i].innerText.split(",")
+        for (var j=0; j<result.length; j++){
+            result[j] = Number(result[j])
+        }
+        dataset[i] = result
+    }
+    console.log(dataset)
+
+    var svg = d3.selectAll(".spectra")
+        .append("svg") 
+        .attr("width", width)      
+        .attr("height", height);
+    
+    
+    var padding = {left:600, right:0, top:20, bottom:20};
+        
+    var da1 = parseFloat(1);
+        var da2 = parseFloat(2);
+        var da3 = parseFloat(10);
+        var da4 = parseFloat(3);
+        var da5 = parseFloat(5);
+        // var da5 = parseFloat(document.getElementById("data5").value);
+        // var dataset = [da1, da2, da3, da4, da5];
+        var dataset = dataset[1].splice(0,10);
+        console.log(dataset);
+        console.log(typeof dataset[1]);
+
+    // var svg = d3.selectAll("")
+
+    var xScale = d3.scale.ordinal()
+        .domain(d3.range(dataset.length))
+        .rangeRoundBands([0, width - padding.left - padding.right]);
+
+    var yScale = d3.scale.linear()
+        .domain([0,d3.max(dataset)])
+        .range([height - padding.top - padding.bottom, 0]);
+    
+    var xAxis = d3.svg.axis()
+        .scale(xScale)
+        .orient("bottom");
+
+    var yAxis = d3.svg.axis()
+        .scale(yScale)
+        .orient("left");
+
+    var rectPadding = 4;
+
+    // var rects = svg.selectAll(".MyRect")
+    //     .data(dataset)
+    //     .enter()
+    //     .append("rect")
+    //     .attr("class","MyRect")
+    //     .attr("transform","translate(" + padding.left + "," + padding.top + ")")
+    //     .attr("x", function(d,i){
+    //         return xScale(i) + rectPadding/2;
+    //     } )
+    //     .attr("y",function(d){
+    //         return yScale(d);
+    //     })
+    //     .attr("width", xScale.rangeBand() - rectPadding )
+    //     .attr("height", function(d){
+    //         return height - padding.top - padding.bottom - yScale(d);
+    //     })
+    //     .attr("fill","green")
+    //     .on("mouseover",function(d,i){
+    //         d3.select(this)
+    //             .attr("fill","yellow");
+    //     })
+    //     .on("mouseout",function(d,i){
+    //         d3.select(this)
+    //             .transition()
+    //             .duration(500)
+    //             .attr("fill","green");
+    //     });
+
+    var lines = svg.selectAll(".MyRect")
+        .data(dataset)
+        .enter()
+        .append("line")
+        .attr("class","MyRect")
+        .attr("transform","translate(" + padding.left + "," + padding.top + ")")
+        .attr("x1", function(d,i){
+            return xScale(i) + rectPadding;
+        } )
+        .attr("x2", function(d,i){
+            return xScale(i) + rectPadding;
+        } )
+        .attr("y1",function(d){
+            return 0;
+        })
+        .attr("y2",function(d){
+            return yScale(d);
+        })
+        // .attr("width", xScale.rangeBand() - rectPadding )
+        .attr("width", 100)
+        .attr("color", "black")
+        .attr("height", function(d){
+            return height - padding.top - padding.bottom - yScale(d);
+        })
+        .attr("stroke","black")
+        .on("mouseover",function(d,i){
+            d3.select(this)
+                .attr("fill","yellow");
+        })
+        .on("mouseout",function(d,i){
+            d3.select(this)
+                .transition()
+                .duration(500)
+                .attr("fill","green");
+        });
+
+    var texts = svg.selectAll(".MyText")
+        .data(dataset)
+        .enter()
+        .append("text")
+        .attr("class","MyText")
+        .attr("transform","translate(" + padding.left + "," + padding.top + ")")
+        .attr("x", function(d,i){
+            return xScale(i) + rectPadding/2;
+        } )
+        .attr("y",function(d){
+            return yScale(d);
+        })
+        .attr("dx",function(){
+            return (xScale.rangeBand() - rectPadding)/2;
+        })
+        .attr("dy",function(d){
+            return 20;
+        })
+        .text(function(d){
+            return d;
+        })
+        .attr("y",function(d){
+            var min = yScale.domain()[0];
+            return yScale(min);
+        })
+        .transition()
+        .delay(function(d,i){
+            return i * 200;
+        })
+        .duration(2000)
+        .ease("bounce")
+        .attr("y",function(d){
+            return yScale(d);
+        });
+
+    svg.append("g")
+    .attr("class","axis")
+    .attr("transform","translate(" + padding.left + "," + (height - padding.bottom) + ")")
+    .call(xAxis); 
+
+
+    svg.append("g")
+    .attr("class","axis")
+    .attr("transform","translate(" + padding.left + "," + padding.top + ")")
+    .call(yAxis);}
+</script>
+</html>
+

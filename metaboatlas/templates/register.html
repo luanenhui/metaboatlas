@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>metaboAtlas</title>
+    <!-- jquery -->
+    <script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
+    <!-- bootstrap -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}" type="text/css">
+    <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}" type="text/javascript"></script>
+    <!-- bootstrap-validator -->
+    <link href="https://cdn.bootcdn.net/ajax/libs/bootstrap-validator/0.5.3/css/bootstrapValidator.min.css" rel="stylesheet">
+    <script src="https://cdn.bootcdn.net/ajax/libs/bootstrap-validator/0.5.3/js/bootstrapValidator.min.js"></script>
+</head>
+
+<body>
+    <div style="height:20%"></div>
+
+    <!-- 用户注册 -->
+    <form id="loginForm" action="/auth/register" method="POST" enctype="multipart/form-data">
+        <div class="form-group">
+            <label for="username">用户名</label>
+            <input class="form-control" id="username" name="username" required="" type="text">
+        </div>
+        
+        <div class="form-group">
+            <label for="password">密码</label> 
+            <input class="form-control" id="password" name="password" placeholder="请输入密码" required type="password">
+        </div>
+        
+        <div class="form-group">
+            <label for="confirm">再次输入密码</label> 
+            <input class="form-control" id="confirm" name="confirm" placeholder="请再次输入密码" required type="password">
+        </div>
+        
+        <div class="form-group">
+            <label for="email">电子邮箱</label>
+            <input class="form-control" id="email" name="email" type="email" required>
+        </div>
+
+        <div class="form-group">
+            <label for="tel">手机号</label>
+            <input class="form-control" id="tel" name="tel" type="tel" value="" required>
+        </div>
+        
+        <div class="form-group">
+            <input class="btn btn-primary" id="submit" name="submit" type="submit" value="点击注册">
+        </div>
+    </form>
+</body>
+
+<script>
+    // 教程 https://www.jianshu.com/p/756b225d480d
+    $('#loginForm').bootstrapValidator({
+        // 默认的提示消息
+        message: 'This value is not valid',
+        // 表单框里右侧的icon
+        feedbackIcons: {
+        　　　　　　　　valid: 'glyphicon glyphicon-ok',
+        　　　　　　　　invalid: 'glyphicon glyphicon-remove',
+        　　　　　　　　validating: 'glyphicon glyphicon-refresh'
+        },
+
+        submitHandler: function (validator, form, submitButton) {
+            alert('submit')
+        // 表单提交成功时会调用此方法
+        // validator: 表单验证实例对象
+        // form  jq对象  指定表单对象
+        // submitButton  jq对象  指定提交按钮的对象
+        },
+
+        fields:{
+            password:{
+                message: "密码长度不小于8位",
+                validators: {
+                    notEmpty: {
+                        message: '用户名不能为空'
+                    },
+                    stringLength: {  //长度限制
+                        min: 6,
+                        max: 18,
+                        message: '用户名长度必须在6到18位之间'
+                    },
+                    regexp: { //正则表达式
+                        regexp: /^[a-zA-Z0-9_]+$/,
+                        message: '用户名只能包含大写、小写、数字和下划线'
+                    },
+                    different: {  //比较
+                        field: 'username', //需要进行比较的input name值
+                        message: '密码不能与用户名相同'
+                    }
+                }
+            },
+            confirm:{
+                message: "密码不一致",
+                validators: {
+                    identical: {
+                        field: "password",
+                        message: "密码必须相同"
+                    }
+                }
+            }
+        }
+
+    })
+</script>
+
+</html>
+
